@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/github/v/tag/sashite/hand.rb?label=Version&logo=github)](https://github.com/sashite/hand.rb/tags)
 [![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?logo=github)](https://rubydoc.info/github/sashite/hand.rb/main)
 ![Ruby](https://github.com/sashite/hand.rb/actions/workflows/main.yml/badge.svg?branch=main)
-[![License](https://img.shields.io/github/license/sashite/hand.rb?label=License&logo=github)](https://github.com/sashite/hand.rb/raw/main/LICENSE.md)
+[![License](https://img.shields.io/github/license/sashite/hand.rb?label=License&logo=github)](https://github.com/sashite/hand.rb/raw/main/LICENSE)
 
 > **HAND** (Hold And Notation Designator) implementation for the Ruby language.
 
@@ -97,20 +97,10 @@ Following the [Game Protocol](https://sashite.dev/game-protocol/):
 
 ## Related Specifications
 
-- [CELL](https://sashite.dev/specs/cell/) - Board position coordinates
-- [GGN](https://sashite.dev/specs/ggn/) - Movement possibility rules
-- [PMN](https://sashite.dev/specs/pmn/) - Portable Move Notation
-
-## Documentation
-
-- [Official HAND Specification v1.0.0](https://sashite.dev/specs/hand/1.0.0/)
-- [Game Protocol Foundation](https://sashite.dev/game-protocol/)
-- [API Documentation](https://rubydoc.info/github/sashite/hand.rb/main)
+- [Game Protocol](https://sashite.dev/game-protocol/) — Conceptual foundation
+- [HAND Specification](https://sashite.dev/specs/hand/1.0.0/) — Official specification
+- [HAND Examples](https://sashite.dev/specs/hand/1.0.0/examples/) — Usage examples
 
 ## License
 
-Available as open source under the [MIT License](https://opensource.org/licenses/MIT).
-
-## About
-
-Maintained by [Sashité](https://sashite.com/) — promoting chess variants and sharing the beauty of board game cultures.
+Available as open source under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).

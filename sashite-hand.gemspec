@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.summary                = "HAND (Hold And Notation Designator) implementation for Ruby"
   spec.description            = "Hold And Notation Designator (HAND) provides a standardized notation for piece reserve locations in board games where pieces can be held off-board and potentially placed. Implements HAND Specification v1.0.0."
   spec.homepage               = "https://github.com/sashite/hand.rb"
-  spec.license                = "MIT"
-  spec.files                  = ::Dir["LICENSE.md", "README.md", "lib/**/*"]
+  spec.license                = "Apache-2.0"
+  spec.files                  = ::Dir["LICENSE", "README.md", "lib/**/*"]
   spec.required_ruby_version  = ">= 3.2.0"
 
   spec.metadata = {
