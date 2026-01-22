@@ -1,44 +1,63 @@
 # frozen_string_literal: true
 
 module Sashite
-  # HAND (Hold And Notation Designator) implementation
+  # HAND (Hold And Notation Designator) implementation.
   #
-  # HAND defines a simple, standardized notation for piece reserve locations
-  # in board games where pieces can be held off-board and potentially placed.
+  # Provides parsing and validation of HAND notation for off-board
+  # reserve locations in board games.
+  #
+  # @example Parsing a notation
+  #   Sashite::Hand.parse("*") # => :"*"
+  #
+  # @example Validation
+  #   Sashite::Hand.valid?("*")  # => true
+  #   Sashite::Hand.valid?("e4") # => false
   #
   # @see https://sashite.dev/specs/hand/1.0.0/
-  # @author Sashité
-  #
-  # @example Basic usage
-  #   Sashite::Hand.reserve?("*")     # => true
-  #   Sashite::Hand.reserve?("a1")    # => false
-  #   Sashite::Hand.to_s              # => "*"
   module Hand
-    # The reserve location character
-    RESERVE = "*"
+    # The HAND notation symbol representing an off-board reserve location.
+    NOTATION = :"*"
 
-    # Check if a string represents the reserve location
+    # Error message for invalid input.
+    ERROR_MESSAGE = "invalid hand notation"
+
+    # Parses a HAND string into a symbol.
     #
-    # @param string [String] the string to check
-    # @return [Boolean] true if the string is the reserve location
+    # @param input [String] HAND notation string
+    # @return [Symbol] the :"*" symbol
+    # @raise [ArgumentError] if the string is not valid HAND notation
     #
     # @example
-    #   Sashite::Hand.reserve?("*")   # => true
-    #   Sashite::Hand.reserve?("a1")  # => false
-    #   Sashite::Hand.reserve?("**")  # => false
-    #   Sashite::Hand.reserve?("")    # => false
-    def self.reserve?(string)
-      RESERVE.eql?(string)
+    #   Sashite::Hand.parse("*")   # => :"*"
+    #   Sashite::Hand.parse("e4")  # => raises ArgumentError
+    def self.parse(input)
+      validate(input)
+      NOTATION
     end
 
-    # Get the canonical HAND representation
+    # Validates a HAND string.
     #
-    # @return [String] the reserve location character
+    # @param input [String] HAND notation string
+    # @return [nil]
+    # @raise [ArgumentError] if the string is not valid HAND notation
     #
     # @example
-    #   Sashite::Hand.to_s            # => "*"
-    def self.to_s
-      RESERVE
+    #   Sashite::Hand.validate("*")   # => nil
+    #   Sashite::Hand.validate("**")  # => raises ArgumentError
+    def self.validate(input)
+      raise ::ArgumentError, ERROR_MESSAGE unless valid?(input)
+    end
+
+    # Reports whether string is a valid HAND notation.
+    #
+    # @param input [String] HAND notation string
+    # @return [Boolean] true if valid, false otherwise
+    #
+    # @example
+    #   Sashite::Hand.valid?("*")  # => true
+    #   Sashite::Hand.valid?("e4") # => false
+    def self.valid?(input)
+      input == NOTATION.to_s
     end
   end
 end

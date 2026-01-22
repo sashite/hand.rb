@@ -1,17 +1,15 @@
-# Hand.rb
+# hand.rb
 
 [![Version](https://img.shields.io/github/v/tag/sashite/hand.rb?label=Version&logo=github)](https://github.com/sashite/hand.rb/tags)
 [![Yard documentation](https://img.shields.io/badge/Yard-documentation-blue.svg?logo=github)](https://rubydoc.info/github/sashite/hand.rb/main)
-![Ruby](https://github.com/sashite/hand.rb/actions/workflows/main.yml/badge.svg?branch=main)
-[![License](https://img.shields.io/github/license/sashite/hand.rb?label=License&logo=github)](https://github.com/sashite/hand.rb/raw/main/LICENSE)
+[![CI](https://github.com/sashite/hand.rb/actions/workflows/ruby.yml/badge.svg?branch=main)](https://github.com/sashite/hand.rb/actions)
+[![License](https://img.shields.io/github/license/sashite/hand.rb)](https://github.com/sashite/hand.rb/blob/main/LICENSE)
 
-> **HAND** (Hold And Notation Designator) implementation for the Ruby language.
+> **HAND** (Hold And Notation Designator) implementation for Ruby.
 
-## What is HAND?
+## Overview
 
-HAND (Hold And Notation Designator) is a standardized notation for representing piece reserve locations in board games where pieces can be held off-board and potentially placed. This applies to games like Shōgi, Crazyhouse, Go, and other games featuring reserve mechanics.
-
-This gem implements the [HAND Specification v1.0.0](https://sashite.dev/specs/hand/1.0.0/), providing a minimalist Ruby interface using a single character: `*` (asterisk).
+This library implements the [HAND Specification v1.0.0](https://sashite.dev/specs/hand/1.0.0/).
 
 ## Installation
 
@@ -28,78 +26,107 @@ gem install sashite-hand
 
 ## Usage
 
+### Parsing (String → Symbol)
+
+Convert a HAND string into a symbol.
+
 ```ruby
 require "sashite/hand"
 
-# Check if a location represents the reserve
-Sashite::Hand.reserve?("*")    # => true
-Sashite::Hand.reserve?("a1")   # => false
-Sashite::Hand.reserve?("**")   # => false
+# Standard parsing (raises on error)
+Sashite::Hand.parse("*")  # => :"*"
 
-# Get the canonical representation
-Sashite::Hand.to_s # => "*"
+# Invalid input raises ArgumentError
+Sashite::Hand.parse("e4")  # => raises ArgumentError
+Sashite::Hand.parse("")    # => raises ArgumentError
 ```
 
-### Movement Notation Examples
+### Validation
 
 ```ruby
-# From reserve to board
-source = "*"
-destination = "e4"
-puts "#{source} → #{destination}" # => "* → e4"
-
-# Shōgi piece drop
-puts "Dropping piece from reserve to 5e" if Sashite::Hand.reserve?("*")
-
-# Go stone placement
-supply = "*"
-puts "Placing stone from supply to dd" if Sashite::Hand.reserve?(supply)
+# Boolean check
+Sashite::Hand.valid?("*")  # => true
+Sashite::Hand.valid?("e4") # => false
+Sashite::Hand.valid?("")   # => false
 ```
 
-## Integration with CELL
-
-HAND complements the [CELL specification](https://sashite.dev/specs/cell/) for complete location coverage:
+### Using the Notation Constant
 
 ```ruby
-def valid_location?(location)
-  Sashite::Cell.valid?(location) || Sashite::Hand.reserve?(location)
-end
+# Access the HAND notation symbol
+Sashite::Hand::NOTATION # => :"*"
 
-valid_location?("*")  # => true (reserve)
-valid_location?("a1") # => true (board position)
+# Convert to string when needed
+Sashite::Hand::NOTATION.to_s # => "*"
 ```
 
 ## API Reference
 
-### Methods
-
-- `Sashite::Hand.reserve?(location)` - Check if location represents the reserve
-- `Sashite::Hand.to_s` - Get the canonical HAND representation (`"*"`)
-
 ### Constants
 
-- `Sashite::Hand::RESERVE` - The reserve location character (`"*"`)
+```ruby
+Sashite::Hand::NOTATION # => :"*"
+```
 
-## Properties
+### Parsing
 
-* **Minimalist**: Single character (`*`) for all reserve operations
-* **Universal**: Works across different board game systems
-* **Rule-agnostic**: Independent of specific reserve mechanics
-* **Complementary**: Designed to work with CELL coordinates
+```ruby
+# Parses a HAND string into a symbol.
+# Raises ArgumentError if the string is not valid.
+#
+# @param input [String] HAND notation string
+# @return [Symbol] the :"*" symbol
+# @raise [ArgumentError] if invalid
+def Sashite::Hand.parse(input)
+```
 
-## Protocol Mapping
+### Validation
 
-Following the [Game Protocol](https://sashite.dev/game-protocol/):
+```ruby
+# Validates a HAND string.
+# Raises ArgumentError with descriptive message if invalid.
+#
+# @param input [String] HAND notation string
+# @return [nil]
+# @raise [ArgumentError] if invalid
+def Sashite::Hand.validate(input)
 
-| Protocol Attribute | HAND Encoding | Meaning |
-|-------------------|---------------|---------|
-| **Location** | `*` | Any off-board reserve area |
+# Reports whether string is a valid HAND notation.
+#
+# @param input [String] HAND notation string
+# @return [Boolean]
+def Sashite::Hand.valid?(input)
+```
+
+### Errors
+
+All parsing and validation errors raise `ArgumentError` with descriptive messages:
+
+| Message | Cause |
+|---------|-------|
+| `"invalid hand notation"` | Input is not exactly `*` |
+
+```ruby
+begin
+  Sashite::Hand.parse("**")
+rescue ArgumentError => e
+  puts e.message # => "invalid hand notation"
+end
+```
+
+## Design Principles
+
+- **Symbol-based**: Notation represented as Ruby symbol for identity semantics
+- **Minimal**: Single constant and three methods
+- **Ruby idioms**: `valid?` predicate, `parse` conversion
+- **Strict validation**: Only the `*` character is accepted
+- **No dependencies**: Pure Ruby standard library only
 
 ## Related Specifications
 
 - [Game Protocol](https://sashite.dev/game-protocol/) — Conceptual foundation
 - [HAND Specification](https://sashite.dev/specs/hand/1.0.0/) — Official specification
-- [HAND Examples](https://sashite.dev/specs/hand/1.0.0/examples/) — Usage examples
+- [CELL Specification](https://sashite.dev/specs/cell/1.0.0/) — Complementary notation for Board squares
 
 ## License
 

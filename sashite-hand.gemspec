@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
     "homepage_uri"          => "https://github.com/sashite/hand.rb",
     "source_code_uri"       => "https://github.com/sashite/hand.rb",
     "specification_uri"     => "https://sashite.dev/specs/hand/1.0.0/",
+    "wiki_uri"              => "https://sashite.dev/specs/hand/1.0.0/examples/",
+    "funding_uri"           => "https://github.com/sponsors/sashite",
     "rubygems_mfa_required" => "true"
   }
 end
